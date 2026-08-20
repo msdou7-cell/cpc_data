@@ -18,9 +18,7 @@
         Church Contribution Dashboard
     </title>
 
-    <!--==================================================
-        STYLESHEET
-    ===================================================-->
+    
 
     <link rel="stylesheet"
           href="dashboard.css">
@@ -239,7 +237,16 @@ setInterval(
 </script>
 
 <script>updateLastUpdated();</script>
-<script src="dashboardData.js"></script>
+<script>
+fetch("data.json")
+  .then(response => response.json())
+  .then(data => {
+    // Example: show first record
+    document.getElementById("dataOutput").textContent = JSON.stringify(data[0]);
+  })
+  .catch(err => console.error("Data load error:", err));
+</script>
+
 
 <script src="dashboard.js"></script>
 
