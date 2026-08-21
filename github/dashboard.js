@@ -52,16 +52,80 @@ function initialiseApplication() {
     registerGlobalEvents();
     showApplicationInformation();
 
-    // ✅ Load data.json before building dashboard
+    // Load detailed records from data.json
     fetch("data.json")
         .then(res => res.json())
-        .then(json => {
-            App.data = json;
-            buildDashboard();   // safe now
-            console.log(APP.name + " loaded successfully.");
+        .then(records => {
+            // If your JSON is a single object, wrap it in an array
+            if (!Array.isArray(records)) {
+                records = [records];
+            }
+
+            // Build totals
+            const totals = {
+                grandTotal: 0,
+                totalFamilies: records.length,
+                totalMembers: records.length, // adjust if you track members separately
+                freeWill: 0,
+                faithPromise: 0,
+                employeeSubscription: 0,
+                nonEmployeeSubscription: 0,
+                windows: 0,
+                cpc: 0,
+                pillars: 0,
+                tiles: 0,
+                savingBox: 0,
+                executiveMembers: 0,
+                societyshares: 0
+            };
+
+            // Aggregate values from each record
+            records.forEach(r => {
+                totals.freeWill += Number(r["FreeWill"]) || 0;
+                totals.faithPromise += Number(r["FaithPromise"]) || 0;
+
+                totals.employeeSubscription +=
+                    (Number(r["Phase 1"]) || 0) +
+                    (Number(r["Phase 2"]) || 0) +
+                    (Number(r["Phase 3 (50%)"]) || 0) +
+                    (Number(r["Phase 4 (50%)"]) || 0) +
+                    (Number(r["Phase 5 (40%)"]) || 0);
+
+                totals.nonEmployeeSubscription +=
+                    (Number(r["Phase A"]) || 0) +
+                    (Number(r["Phase B"]) || 0) +
+                    (Number(r["Phase C (50%)"]) || 0) +
+                    (Number(r["Phase D (50%)"]) || 0) +
+                    (Number(r["Phase E (Cate. A/B)"]) || 0);
+
+                totals.windows += Number(r["Windows"]) || 0;
+                totals.cpc += Number(r["CPC Subscription"]) || 0;
+                totals.pillars += Number(r["Pillars"]) || 0;
+                totals.tiles += Number(r["Tiles"]) || 0;
+                totals.savingBox += Number(r["Saving Box"]) || 0;
+            });
+
+            // Calculate grand total
+            totals.grandTotal =
+                totals.freeWill +
+                totals.faithPromise +
+                totals.employeeSubscription +
+                totals.nonEmployeeSubscription +
+                totals.windows +
+                totals.cpc +
+                totals.pillars +
+                totals.tiles +
+                totals.savingBox;
+
+            // Save aggregated data
+            App.data = totals;
+
+            // Build KPI dashboard
+            buildDashboard();
         })
         .catch(err => console.error("Data load error:", err));
 }
+
 
 /*=============================================================
     GLOBAL EVENTS
