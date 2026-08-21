@@ -25,7 +25,6 @@ const App = {
     DOM CACHE
 =============================================================*/
 const Cache = {};
-
 const DOM = {
     appContainer: "appContainer",
     kpiSection: "kpiSection",
@@ -58,7 +57,7 @@ function initialiseApplication() {
         .then(res => res.json())
         .then(json => {
             App.data = json;
-            buildDashboard();
+            buildDashboard();   // safe now
             console.log(APP.name + " loaded successfully.");
         })
         .catch(err => console.error("Data load error:", err));
@@ -89,15 +88,12 @@ function formatNumber(value) {
     value = Number(value) || 0;
     return value.toLocaleString("en-IN", { maximumFractionDigits: 0 });
 }
-
 function formatCurrency(value) {
     return "₹ " + formatNumber(value);
 }
-
 function safeText(value) {
     return value == null ? "" : String(value).trim();
 }
-
 function safeNumber(value) {
     value = Number(value);
     return isNaN(value) ? 0 : value;
