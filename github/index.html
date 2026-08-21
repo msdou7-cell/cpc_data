@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Church Contribution Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+<div id="appContainer">
+
+    <!-- HEADER -->
+    <header id="dashboardHeader">
+        <div class="header-left">
+            <img src="" id="churchLogo" alt="Church Logo">
+        </div>
+
+        <div class="header-center">
+            <h1 id="churchName">
+                WAITHOU PHUNAL BAPTIST CHURCH, MNBA<br/>CHURCH PLANNING COMMITTEE
+            </h1>
+            <h2 id="dashboardTitle">CHURCH CONTRIBUTION DASHBOARD</h2>
+
+            <div id="headerInfo">
+                <div class="info-box">
+                    <span class="info-title">Accounting Years</span>
+                    <span class="info-value" id="financialYear">2016-2026</span>
+                </div>
+                <div class="info-box">
+                    <span class="info-title">Last Updated</span>
+                    <span class="info-value" id="lastUpdated">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <marquee style="font-size:14px; color:blue;">
+        Executive Members of the Church Planning Committee are:
+    </marquee>
+
+    <!-- KPI CARDS -->
+    <section id="kpiSection">
+        <!-- Cards are generated dynamically by dashboard.js -->
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main id="contentArea">
+        <section id="summaryPanel"></section>
+        <section id="toolbarPanel"></section>
+        <section id="tablePanel">
+            <table id="detailTable">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </section>
+        <section id="statusBar"></section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer id="dashboardFooter"></footer>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+function updateLastUpdated() {
+    const element = document.getElementById("lastUpdated");
+    if (!element) return;
+
+    const now = new Date();
+    const formatted = now.toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    });
+    element.textContent = formatted;
+}
+
+// Update immediately and every second
+updateLastUpdated();
+setInterval(updateLastUpdated, 1000);
+</script>
+
+<script src="dashboard.js"></script>
+
+<section id="printReport"></section>
+</body>
+</html>
